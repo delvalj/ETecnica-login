@@ -39,18 +39,24 @@ export default {
       let usr = Object.assign({}, this.user);
       usr.password = this.shaPass(usr.password);
 
-      console.log(usr);
+      // console.log(usr);
 
-      ////
       axios.post('http://200.10.96.221:8080/Auth/Login', {
-          nombreUsuario: usr.nombreUsuario,
-          password: usr.password
+        nombreUsuario: usr.nombreUsuario,
+        password: usr.password,
+        returnSecureToken: true
       })
+
           .then(users => {
             console.log(users)
+
+            const toksen =  users.headers.token;
+            console.log(toksen)
+
           })
+
           .catch(function (error) {
-                console.log(error);
+            console.log(error);
           });
 
     },
@@ -58,7 +64,7 @@ export default {
       // funcion con la Contraseña Encriptada
 
       let passwordCodificado = sha256(password);
-      console.log(passwordCodificado);
+      // console.log(passwordCodificado);
 
       return passwordCodificado;
     },
