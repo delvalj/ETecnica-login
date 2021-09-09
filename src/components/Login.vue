@@ -5,7 +5,6 @@
       <label> User</label>
       <input v-model="user.nombreUsuario" type="text" placeholder="User">
 
-
       <br> <br>
 
       <label> Pass</label>
@@ -21,6 +20,7 @@
 
 <script>
 const sha256 = require('js-sha256');
+const axios = require('axios').default;
 
 export default {
   name: "Login",
@@ -29,7 +29,6 @@ export default {
       user: {
         nombreUsuario: 'test_input',
         password: 'PruebaTesting',
-
       }
     }
   },
@@ -42,29 +41,27 @@ export default {
 
       console.log(usr);
 
-      fetch("http://200.10.96.221:8080/Auth/Login", {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(usr)
+      ////
+      axios.post('http://200.10.96.221:8080/Auth/Login', {
+          nombreUsuario: usr.nombreUsuario,
+          password: usr.password
       })
-          .then(data => data.json())
           .then(users => {
             console.log(users)
+          })
+          .catch(function (error) {
+                console.log(error);
           });
+
     },
     shaPass(password) {
-      // funcion con la contraseña encriptada
+      // funcion con la Contraseña Encriptada
 
-      var passwordCodificado = sha256(password);
+      let passwordCodificado = sha256(password);
       console.log(passwordCodificado);
 
       return passwordCodificado;
     },
-
-
   }
 }
 
@@ -79,11 +76,11 @@ html {
   border-radius: 50px;
   height: 200px;
   width: 280px;
-  font-family: 'Arial', SansSerif,serif;
+  font-family: 'Arial', SansSerif, serif;
 
 }
 
-.title{
+.title {
   text-align: center;
 }
 
